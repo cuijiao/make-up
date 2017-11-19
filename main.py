@@ -13,10 +13,11 @@
 # 1. Install Python dependencies: cv2, flask. (wish that pip install works like a charm)
 # 2. Run "python main.py".
 # 3. Navigate the browser to the local webpage.
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 from camera import VideoCamera
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():
@@ -28,10 +29,15 @@ def gen(camera):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
+
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(VideoCamera()),
+    eyebrows = request.args.get('eyebrows', default='{"r": 68, "g": 54, "b": 39, "opacity":128}', type=str)
+    lips = request.args.get('lips', default='{"r": 255, "g": 0, "b": 0, "opacity": 128}', type=str)
+    eyeliner = request.args.get('eyeliner', default='{"r": 0, "g": 0, "b": 0, "opacity": 110}', type=str)
+    return Response(gen(VideoCamera(eyebrows, lips, eyeliner)),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

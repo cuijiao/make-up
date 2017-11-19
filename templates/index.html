@@ -1,9 +1,42 @@
 <html>
-  <head>
-    <title>Video Streaming Demonstration</title>
-  </head>
-  <body>
-    <h1>Video Streaming Demonstration</h1>
-    <img id="bg" src="{{ url_for('video_feed') }}">
-  </body>
+    <head>
+        <title>Video Streaming Demonstration</title>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='index.css') }}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="{{url_for('static', filename='index.js')}}"></script>
+    </head>
+    <body>
+        <h1>Allow your Make Up more easier</h1>
+        <div class="eyebrows">
+            <label>eyebrows</label>
+            <select id="eyebrows">
+                <option value="8B4513" selected="selected">SaddleBrown</option>
+                <option value="696969">DimGray</option>
+                <option value="000000">Black</option>
+                <option value="8B7355">Burlywood</option>
+            </select>
+        </div>
+        <div class="lips">
+            <label>lips</label>
+            <select id="lips">
+                <option value="ff0000" selected="selected">Red</option>
+                <option value="2">Feature 2</option>
+                <option value="3">Feature 3</option>
+                <option value="4">Feature 4</option>
+            </select>
+        </div>
+        <div class="eyeliner">
+            <label>eyeliner</label>
+            <select id="eyeliner">
+                <option value="1" selected="selected">Feature 1</option>
+                <option value="2">Feature 2</option>
+                <option value="3">Feature 3</option>
+                <option value="4">Feature 4</option>
+            </select>
+        </div>
+        <button class="show" type="button">Show</button>
+        <div id="video">
+            <img id="bg" src="{{ url_for('video_feed') }}">
+        </div>
+    </body>
 </html>
