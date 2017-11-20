@@ -1,7 +1,22 @@
+body{
+    width: 64%;
+    margin: auto;
+    background-color: #f7f8f9;
+}
+
 h1{
     text-align: center;
+    margin: 30px;
+}
+
+.eyebrows, .lips, .eyeliner, .show{
+    display: inline-block;
+    margin: 10px;
 }
 
 #bg{
-    width: 40%;
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 5px;
+    border: 2px solid black;
 }
