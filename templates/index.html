@@ -1,8 +1,9 @@
 <html>
     <head>
         <title>Video Streaming Demonstration</title>
+        <meta name="referrer" content="no-referrer" />
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='index.css') }}">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="{{url_for('static', filename='jquery.min.js')}}"></script>
         <script src="{{url_for('static', filename='index.js')}}"></script>
     </head>
     <body>
@@ -20,23 +21,21 @@
             <label>lips</label>
             <select id="lips">
                 <option value="ff0000" selected="selected">Red</option>
-                <option value="2">Feature 2</option>
-                <option value="3">Feature 3</option>
-                <option value="4">Feature 4</option>
+                <option value="ff00ff">Purple</option>
+                <option value="ffff00">Yellow</option>
+                <option value="00ff80">Green</option>
             </select>
         </div>
         <div class="eyeliner">
             <label>eyeliner</label>
             <select id="eyeliner">
-                <option value="1" selected="selected">Feature 1</option>
-                <option value="2">Feature 2</option>
-                <option value="3">Feature 3</option>
-                <option value="4">Feature 4</option>
+                <option value="87CEEB" selected="selected">SkyBlue</option>
+                <option value="191970">MidnightBlue</option>
+                <option value="9370DB">MediumPurple</option>
+                <option value="FF1493">DeepPink</option>
             </select>
         </div>
-        <button class="show" type="button">Show</button>
-        <div id="video">
-            <img id="bg" src="{{ url_for('video_feed') }}">
-        </div>
+        <button class="show" type="button" onclick="updateStyles()">Update Styles</button>
+        <img id="bg" src="{{ url_for('video_feed') }}">
     </body>
 </html>

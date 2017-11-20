@@ -15,29 +15,45 @@
 # 3. Navigate the browser to the local webpage.
 from flask import Flask, render_template, Response, request
 from camera import VideoCamera
+from styles import Styles
+import json
 
 app = Flask(__name__)
+styles = Styles()
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-def gen(camera):
+def generate_video(camera):
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 
+def init_styles():
+    styles.set_eyebrows({"r": 0, "g": 0, "b": 255, "opacity": 128})
+    styles.set_eyeliner({"r": 0, "g": 255, "b": 0, "opacity": 110})
+    styles.set_lips({"r": 255, "g": 0, "b": 0, "opacity": 128})
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
 @app.route('/video_feed')
 def video_feed():
-    eyebrows = request.args.get('eyebrows', default='{"r": 68, "g": 54, "b": 39, "opacity":128}', type=str)
-    lips = request.args.get('lips', default='{"r": 255, "g": 0, "b": 0, "opacity": 128}', type=str)
-    eyeliner = request.args.get('eyeliner', default='{"r": 0, "g": 0, "b": 0, "opacity": 110}', type=str)
-    return Response(gen(VideoCamera(eyebrows, lips, eyeliner)),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    init_styles()
+    return Response(generate_video(VideoCamera()), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/update_styles', methods=['POST'])
+def update_styles():
+    styles_json = json.loads(request.get_data())
+    styles.set_eyebrows(styles_json['eyebrows'])
+    styles.set_eyeliner(styles_json['eyeliner'])
+    styles.set_lips(styles_json['lips'])
+    return "success"
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=True, threaded=True)
